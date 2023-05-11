@@ -32,7 +32,7 @@ int main(){
 
 	g = createAdjList(&v, &e);
 	// color = graphColoring(g, v);
-	// viewList(g, v);
+	//viewList(g, v);
 	// viewColor(color, v);
 	
 	// free(color);
@@ -43,49 +43,57 @@ int main(){
 graph **createAdjList(int *v, int *e){
 	/*insert code here for creating an adjacency list*/
 
-	int vertices[5];
-	struct node* A[5];
-	int counter = 0;
+	int vertices[5];						// list of nodes saved
+	graph* A[5];
 
 	fp = fopen("Exer9.in", "rw");
 
 	if(fp != NULL){
-		fscanf(fp,"%d",&numIn);
+		fscanf(fp,"%d",&numIn);				// reads number of vertices
 		*v = numIn;
-		fscanf(fp,"%d",&numIn);
+		fscanf(fp,"%d",&numIn);				// reads number of edges
 		*e = numIn;
 
 		printf("Vertices: %d \n", *v);
 		printf("Edges: %d \n", *e);
 
-		while((fscanf(fp,"%d",&numIn)) == 1){
-			fscanf(fp,"%d",&num2);
+		while((fscanf(fp,"%d",&numIn)) == 1){			// gets first value
+			fscanf(fp,"%d",&num2);						// gets second value
 
-			// first node
-			struct node* newNode = (struct node*)malloc(sizeof(struct node));
+			// creates first node
+			//struct node* newNode = (struct node*)malloc(sizeof(struct node));
+			graph* newNode = (graph*)malloc(sizeof(graph));
 			newNode->x = num2;
 			newNode->next = NULL;
-
-			// second node
-			struct node* newNode2 = (struct node*)malloc(sizeof(struct node));
-			newNode2->x = numIn;
-			newNode2->next = NULL;
 
 			if(vertices[numIn] != numIn){
 				A[numIn] = newNode; // add head
 			}else{
-				struct node *temp = A[numIn];
+				graph* temp = A[numIn];
 				while(temp->next != NULL){
 					temp = temp->next;
 				}
 				temp->next = newNode;
 			}
 
+			// creates second node
+			graph* newNode2 = (graph*)malloc(sizeof(graph));
+			newNode2->x = numIn;
+			newNode2->next = NULL;
 
+			if(vertices[num2] != num2){
+				A[num2] = newNode2; // add head
+			}else{
+				graph* temp = A[num2];
+				while(temp->next != NULL){
+					temp = temp->next;
+				}
+				temp->next = newNode2;
+			}
+			
 			// update vertices array
 			vertices[numIn] = numIn;
-
-			
+			vertices[num2] = num2;
 		}
 	}
 	fclose(fp);
@@ -101,6 +109,8 @@ graph **createAdjList(int *v, int *e){
 		}
 		printf("\n");
 	}
+
+	//return A;
 }
 
 void viewList(graph **g, int v){
